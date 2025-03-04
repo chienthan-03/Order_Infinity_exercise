@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Card with Carousel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                DEFAULT: "#3e5068",
+                foreground: "#ffffff",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .carousel {
+        position: relative;
+        overflow: hidden;
+      }
+      .carousel-container {
+        display: flex;
+        transition: transform 0.5s ease;
+      }
+      .carousel-slide {
+        min-width: 100%;
+        flex-shrink: 0;
+      }
+      .carousel-dots {
+        display: flex;
+        justify-content: center;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        padding: 0.5rem;
+      }
+      .carousel-dot {
+        width: 2.5rem;
+        height: 0.5rem;
+        margin: 0 0.25rem;
+        position: relative;
+        padding: 0;
+      }
+      .carousel-dot-bg {
+        background-color: rgba(67, 74, 88, 0.4);
+        height: 0.5rem;
+        border-radius: 9999px;
+        width: 2.5rem;
+      }
+      .carousel-dot-active {
+        position: absolute;
+        z-index: 3;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background-color: black;
+        border-radius: 9999px;
+        transition: transform 0.4s ease-in-out;
+      }
+      .dark .carousel-dot-active {
+        background-color: white;
+      }
+      .heart-icon {
+        transition: transform 0.3s, fill 0.3s;
+      }
+      .heart-icon.active {
+        transform: scale(1.2);
+        fill: rgb(248, 113, 113);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="w-[350px] mx-auto my-8">
+      <div class="dark:bg-white bg-gray-100 rounded-md p-2">
+        <div class="w-full h-72 relative carousel">
+          <!-- Heart Button -->
+          <button
+            class="absolute top-2 right-2 z-20 text-2xl text-red-400 heart-btn"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="heart-icon"
+            >
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+              ></path>
+            </svg>
+          </button>
+
+          <!-- Carousel -->
+          <div class="carousel-container h-full">
+            <div class="carousel-slide w-full h-full">
+              <img
+                src="https://product.hstatic.net/1000360022/product/ao-thun-icondenim-orgnls__8__2f67cd2cf10641d3a45ec71d594527ac_master.jpg"
+                alt="polo"
+                class="w-full h-full rounded-md object-cover"
+              />
+            </div>
+            <div class="carousel-slide w-full h-full">
+              <img
+                src="https://product.hstatic.net/1000360022/product/ao-thun-icondenim-orgnls__8__2f67cd2cf10641d3a45ec71d594527ac_master.jpg"
+                alt="polo"
+                class="w-full h-full rounded-md object-cover"
+              />
+            </div>
+            <div class="carousel-slide w-full h-full">
+              <img
+                src="https://product.hstatic.net/1000360022/product/ao-thun-icondenim-orgnls__8__2f67cd2cf10641d3a45ec71d594527ac_master.jpg"
+                alt="polo"
+                class="w-full h-full rounded-md object-cover"
+              />
+            </div>
+            <div class="carousel-slide w-full h-full">
+              <img
+                src="https://product.hstatic.net/1000360022/product/ao-thun-icondenim-orgnls__8__2f67cd2cf10641d3a45ec71d594527ac_master.jpg"
+                alt="polo"
+                class="w-full h-full rounded-md object-cover"
+              />
+            </div>
+          </div>
+
+          <!-- Carousel Dots -->
+          <div class="carousel-dots">
+            <button type="button" class="carousel-dot" data-index="0">
+              <div class="carousel-dot-bg"></div>
+              <div class="carousel-dot-active"></div>
+            </button>
+            <button type="button" class="carousel-dot" data-index="1">
+              <div class="carousel-dot-bg"></div>
+            </button>
+            <button type="button" class="carousel-dot" data-index="2">
+              <div class="carousel-dot-bg"></div>
+            </button>
+            <button type="button" class="carousel-dot" data-index="3">
+              <div class="carousel-dot-bg"></div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Product Info -->
+        <article class="text-black pt-2 p-2">
+          <div class="flex justify-between">
+            <h1 class="font-semibold text-lg text-blue-500">Áo thun nam</h1>
+            <span class="font-medium text-blue-500">250.000 VNĐ</span>
+          </div>
+          <p class="text-sm pb-2">Chất liệu cotton, thoải mái</p>
+          <button
+            class="w-full text-white flex justify-center items-center gap-2 bg- py-3 rounded-md bg-blue-500 hover:bg-blue-600"
+          >
+            Mua ngay
+          </button>
+        </article>
+      </div>
+    </div>
+
+    <script>
+      // Carousel functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const container = document.querySelector(".carousel-container");
+        const slides = document.querySelectorAll(".carousel-slide");
+        const dots = document.querySelectorAll(".carousel-dot");
+        const heartBtn = document.querySelector(".heart-btn");
+        const heartIcon = document.querySelector(".heart-icon");
+
+        let currentIndex = 0;
+        let interval;
+
+        // Initialize carousel
+        updateCarousel();
+        startAutoplay();
+
+        // Set up dot navigation
+        dots.forEach((dot) => {
+          dot.addEventListener("click", () => {
+            currentIndex = parseInt(dot.getAttribute("data-index"));
+            updateCarousel();
+            resetAutoplay();
+          });
+        });
+
+        // Heart button functionality
+        heartBtn.addEventListener("click", () => {
+          heartIcon.classList.toggle("active");
+        });
+
+        // Autoplay functions
+        function startAutoplay() {
+          interval = setInterval(() => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateCarousel();
+          }, 3000);
+        }
+
+        function resetAutoplay() {
+          clearInterval(interval);
+          startAutoplay();
+        }
+
+        // Update carousel display
+        function updateCarousel() {
+          container.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+          // Update active dot
+          dots.forEach((dot, index) => {
+            const activeElement = dot.querySelector(".carousel-dot-active");
+            if (index === currentIndex) {
+              if (!activeElement) {
+                const newActiveElement = document.createElement("div");
+                newActiveElement.className = "carousel-dot-active";
+                dot.appendChild(newActiveElement);
+              }
+            } else {
+              if (activeElement) {
+                activeElement.remove();
+              }
+            }
+          });
+        }
+
+        // Pause autoplay on hover
+        container.addEventListener("mouseenter", () => {
+          clearInterval(interval);
+        });
+
+        container.addEventListener("mouseleave", () => {
+          startAutoplay();
+        });
+      });
+    </script>
+  </body>
+</html>

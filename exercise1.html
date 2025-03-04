@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Tracking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Custom animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes scaleIn {
+        from {
+          transform: scale(0);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes growDown {
+        from {
+          height: 0;
+        }
+        to {
+          height: var(--line-height, 100%);
+        }
+      }
+
+      @keyframes slideInRight {
+        from {
+          transform: translateX(-20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      .animate-fadeIn {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      .animate-scaleIn {
+        animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      }
+
+      .animate-growDown {
+        animation: growDown 0.5s ease-out forwards;
+      }
+
+      .animate-slideInRight {
+        animation: slideInRight 0.5s ease-out forwards;
+      }
+
+      .timeline-item {
+        opacity: 0;
+      }
+
+      .timeline-circle {
+        transform: scale(0);
+      }
+
+      .timeline-line {
+        height: 0;
+        position: absolute;
+        top: 0;
+      }
+
+      .timeline-content {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "Arial", "sans-serif"],
+            },
+            colors: {
+              amber: {
+                500: "#F7CC5B",
+                600: "#DEA100",
+              },
+              red: {
+                500: "#EF4444",
+              },
+              gray: {
+                200: "#E5E7EB",
+                400: "#9CA3AF",
+                500: "#6B7280",
+                600: "#4B5563",
+              },
+            },
+            borderRadius: {
+              DEFAULT: "12px",
+              lg: "24px",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-gray-50">
+    <div
+      class="w-screen h-screen flex justify-center items-start md:items-center"
+    >
+      <div
+        class="w-full max-w-[428px] relative md:border-[1px] md:shadow-md bg-white"
+      >
+        <!-- Header -->
+        <div
+          class="flex items-center justify-center shadow-sm border-b border-gray-200 h-14"
+        >
+          <div class="w-12 h-12 absolute left-4 top-1">
+            <img
+              src="https://s3-alpha-sig.figma.com/img/496b/b13a/4cebfdf2bc21969f1215dd4941918a96?Expires=1742169600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Qrlz4JGDnRsXw7~hrCWxb4Rjzmgg4QZM~jiB8Os8ozlUE5i5ILtOUH7RFVLqhkM2a-aaMGh0vHjGJ79jv5ybPcfDoW4sC6Xh31qL2pgX5wrzab3j6apj4ZyOHIoxZ-vZpNiIr1~lEfC5Auoc71vzfUM6iwpxngakPXXtzVhYxIw6-3McS8Pt5kTwTCdoyeiroWDApxSGqO0EnKsNVPvYSK9dPFVxj-DMeSkWJilAJ9TrkYOKVVUGicYMv2iUyNB8VZe5iRVO6FFAVBEddF4dB0tB-t6eDyp5YJS0hHejWaX6qwiOjcicw0DaSc1nUSl-i52x-eSqZdedr3bkvgCwxQ__"
+              alt="Shop Logo"
+              class="w-full h-full object-contain"
+            />
+          </div>
+          <div class="flex flex-col items-center justify-center flex-1">
+            <h1 class="font-semibold">Shop Name</h1>
+            <p class="text-xs text-gray-400 pb-1">Shop address</p>
+          </div>
+        </div>
+
+        <!-- Order Number Card -->
+        <div class="p-4 bg-[#F5F6FA] m-4 rounded-lg">
+          <div
+            class="bg-white rounded-xl p-4 shadow-sm flex flex-col justify-center items-center"
+          >
+            <p class="text-gray-600 mb-1 font-bold">Your order number</p>
+            <h2 class="text-[34px] font-semibold text-amber-600">
+              Sushi - #005
+            </h2>
+          </div>
+        </div>
+
+        <!-- Order Timeline -->
+        <div class="px-8">
+          <div class="rounded-lg p-4">
+            <div class="flex flex-col" id="timeline">
+              <div class="flex items-start timeline-item">
+                <div class="pr-4">
+                  <div class="font-bold text-sm">14:45</div>
+                  <div class="text-gray-400 text-xs">Nov 20, 2024</div>
+                </div>
+                <div class="flex flex-col items-center mr-4 relative">
+                  <div
+                    class="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center text-white timeline-circle"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-6 w-6"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div
+                    class="w-1 bg-amber-500 absolute top-[38px] rounded-full bottom-0 timeline-line"
+                    style="--line-height: 20px"
+                  ></div>
+                </div>
+                <div class="flex-1 timeline-content">
+                  <h3 class="font-bold text-sm">Order received</h3>
+                  <p class="text-gray-400 text-xs">
+                    We have received your order.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Drivers Busy -->
+              <div class="flex items-start timeline-item mt-7">
+                <div class="pr-4">
+                  <div class="font-bold text-sm">14:45</div>
+                  <div class="text-gray-400 text-xs">Nov 20, 2024</div>
+                </div>
+                <div class="flex flex-col items-center mr-4 relative">
+                  <div
+                    class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white timeline-circle"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-6 w-6"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div
+                    class="w-1 bg-red-500 absolute top-10 bottom-0 timeline-line rounded-full"
+                    style="--line-height: 28px"
+                  ></div>
+                </div>
+                <div class="flex-1 timeline-content">
+                  <h3 class="text-sm font-bold">
+                    All drivers are currently busy
+                  </h3>
+                  <p class="text-gray-400 text-xs">
+                    We're sorry, all our drivers are currently busy. The system
+                    could not find a suitable driver at this time.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Cancel Order -->
+              <div class="flex items-start timeline-item mt-4">
+                <div class="pr-4">
+                  <div class="font-bold text-sm">14:50</div>
+                  <div class="text-gray-400 text-xs">Nov 20, 2024</div>
+                </div>
+                <div class="flex flex-col items-center mr-4 relative">
+                  <div
+                    class="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center text-white timeline-circle"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-6 w-6"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div
+                    class="w-1 bg-amber-500 absolute top-[38px] rounded-full bottom-0 timeline-line"
+                    style="--line-height: 20px"
+                  ></div>
+                </div>
+                <div class="flex-1 timeline-content">
+                  <h3 class="text-sm font-bold">Cancel Order &amp; Refund</h3>
+                  <p class="text-gray-400 text-xs">
+                    The order will be canceled.
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start timeline-item mt-7">
+                <div class="pr-4">
+                  <div class="font-bold text-sm">14:51</div>
+                  <div class="text-gray-400 text-xs">Nov 20, 2024</div>
+                </div>
+                <div class="flex flex-col items-center mr-4">
+                  <div
+                    class="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center timeline-circle"
+                  >
+                    <div
+                      class="w-6 h-6 bg-white rounded-full flex justify-center items-center"
+                    >
+                      <div class="w-4 h-4 bg-amber-500 rounded-full"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex-1 timeline-content">
+                  <h3 class="text-sm font-bold">Refund successful</h3>
+                  <p class="text-gray-400 text-xs">
+                    Your money will be refunded in a couple of minutes
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Apology and Action Button -->
+        <div class="m-4 bg-[#F5F6FA] rounded-lg p-6">
+          <h2 class="text-2xl font-bold text-center mb-2">
+            Sorry, We Couldn't Deliver
+          </h2>
+          <p class="text-center text-gray-500 mb-6">
+            We couldn't find a driver this time. Please try ordering again or
+            choose Takeaway instead. Thank you for understanding!
+          </p>
+          <button
+            class="w-full bg-[#F7CC5B] hover:bg-amber-400 transition-colors text-black font-bold py-3 rounded-md"
+          >
+            Place new order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const timelineItems = document.querySelectorAll(".timeline-item");
+        const timelineCircles = document.querySelectorAll(".timeline-circle");
+        const timelineLines = document.querySelectorAll(".timeline-line");
+        const timelineContents = document.querySelectorAll(".timeline-content");
+
+        function animateTimeline() {
+          timelineItems.forEach((item, index) => {
+            setTimeout(() => {
+              item.classList.add("animate-fadeIn");
+
+              const circle = timelineCircles[index];
+              const line = timelineLines[index];
+              const content = timelineContents[index];
+
+              circle.classList.add("animate-scaleIn");
+
+              if (line) {
+                setTimeout(() => {
+                  line.classList.add("animate-growDown");
+                }, 300);
+              }
+
+              setTimeout(() => {
+                content.classList.add("animate-slideInRight");
+              }, 200);
+            }, index * 600);
+          });
+        }
+
+        setTimeout(animateTimeline, 500);
+      });
+    </script>
+  </body>
+</html>
